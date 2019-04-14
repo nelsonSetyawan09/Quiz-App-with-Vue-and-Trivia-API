@@ -1,18 +1,37 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <AppHeader />
+    <QuestionBox
+        :question="questions[index]"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import axios from 'axios'
+import Header from './components/Header.vue'
+import QuestionBox from './components/QuestionBox.vue'
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
+    name: 'app',
+    data(){
+        // return obj
+        return {
+            questions: null,
+            index:0
+        }
+    },
+    components: {
+        'AppHeader': Header,
+        QuestionBox
+    },
+    mounted () {
+        axios
+            .get('https://opentdb.com/api.php?amount=12&category=18&type=multiple')
+            .then(response => response.data)
+            .then(data => {
+                this.questions = data.results
+            })
+        }
 }
 </script>
 
