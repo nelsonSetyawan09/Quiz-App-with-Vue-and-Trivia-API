@@ -1,9 +1,25 @@
 <template>
   <div id="app">
-    <AppHeader />
-    <QuestionBox
-        :question="questions[index]"
+    <AppHeader
+        :numCorrect="numCorrect"
+        :numTotal="numTotal"
     />
+    <b-container class="bv-example-row">
+      <b-row >
+        <b-col
+            sm='6'
+            offset='3'>
+            <QuestionBox
+                v-if="questions.length"
+                :question="questions[index]"
+                :next="next"
+                :increment="increment"
+                :quizHabis="index"
+            />
+        </b-col>
+      </b-row>
+    </b-container>
+
   </div>
 </template>
 
@@ -16,15 +32,28 @@ export default {
     data(){
         // return obj
         return {
-            questions: null,
-            index:0
+            questions: [],
+            index:0,
+            numCorrect:0,
+            numTotal:0
         }
     },
     components: {
         'AppHeader': Header,
         QuestionBox
     },
-    mounted () {
+    methods:{
+        next(){
+            this.index++
+        },
+        increment(isCorrect){
+            if(isCorrect){
+                this.numCorrect++;
+            }
+            this.numTotal++;
+        }
+    },
+    mounted() {
         axios
             .get('https://opentdb.com/api.php?amount=12&category=18&type=multiple')
             .then(response => response.data)
