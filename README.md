@@ -1,4 +1,4 @@
-# quiz
+# Kuis web app sederhana dengan Vue dan Trivia API
 
 ## Project setup
 ```
